@@ -64,6 +64,7 @@ jobs:
               The following is the assignment specification for a bug tracking application that students are tasked with creating. Use this context to generate relevant comprehension questions that test the student's understanding of the requirements and their implementation choices.
               Students are taking an advanced programming course (PROG2400) and are expected to demonstrate their ability to read and interpret assignment specifications, design appropriate data structures (like linked lists), implement file I/O operations, and apply sorting and searching algorithms without relying on library data structures. 
               The questions should probe their understanding of these concepts as they relate to the provided assignment specification.
+              When asking questions about a particular function, include the entire function definition in the question, not just a snippet. This allows the student to see the full context of their implementation and encourages them to think critically about how their code meets the assignment requirements.
           
               The assignment specification is as follows:
 
