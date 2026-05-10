@@ -61,7 +61,13 @@ jobs:
           #   Assignment 3 — Python list comprehensions and lambda functions.
           #   Focus questions on why the student made their design choices.
           additional_context: "
-              PROG2400 Supplementary
+              The following is the assignment specification for a bug tracking application that students are tasked with creating. Use this context to generate relevant comprehension questions that test the student's understanding of the requirements and their implementation choices.
+              Students are taking an advanced programming course (PROG2400) and are expected to demonstrate their ability to read and interpret assignment specifications, design appropriate data structures (like linked lists), implement file I/O operations, and apply sorting and searching algorithms without relying on library data structures. 
+              The questions should probe their understanding of these concepts as they relate to the provided assignment specification.
+          
+              The assignment specification is as follows:
+
+              PROG2400 Supplementary Assignment — Bug Tracking Application
 
               Introduction
                 Your task is to create the beginnings of a bug tracking application to demonstrate major concepts from the course.
