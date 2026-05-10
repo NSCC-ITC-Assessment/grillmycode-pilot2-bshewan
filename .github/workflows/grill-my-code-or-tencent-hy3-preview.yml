@@ -66,6 +66,7 @@ jobs:
           # Comma-separated globs for files to include. Leave empty to assess
           # all non-excluded files.
           # include_patterns: "*.py,*.js,src/**"
+          include_patterns: "**/*.cpp,**/*.h"
 
           # Comma-separated globs for files to exclude. Providing a value here
           # completely replaces the built-in default list (lock files, images,
