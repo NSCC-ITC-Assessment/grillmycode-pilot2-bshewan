@@ -1,9 +1,17 @@
 ## Grill My Code
 
-> **Generated:** 2026-05-10 13:48:47 UTC
-> **Commits reviewed:** `4334237` → `22da5ce`
+> **Generated:** 2026-05-10 14:35:24 UTC
+> **Commits reviewed:** `4334237` → `6183a52`
 
 > **Files assessed:** `src/LinkedList.cpp`, `src/LinkedList.h`, `src/main.cpp`
+
+---
+
+**`src/LinkedList.h`**
+```cpp
+int commentCount;
+```
+1. What is the role of `commentCount` in relation to the `comments` array in the `Bug` struct?
 
 ---
 
@@ -11,159 +19,31 @@
 ```cpp
 LinkedList::LinkedList() {
     head = nullptr;
-};
-```
-1. Why is `head` initialized to `nullptr` in the constructor of `LinkedList`?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-BugNode* current = head;
-while (current != nullptr) {
-    BugNode* next = current->next;
-    delete current;
-    current = next;
 }
 ```
-2. In the destructor, what role does the local variable `next` play inside the `while` loop?
+2. What does assigning `nullptr` to `head` in the constructor accomplish for a newly created `LinkedList`?
 
 ---
 
 **`src/LinkedList.cpp`**
 ```cpp
-head = nullptr;
-```
-3. After the `while` loop in the destructor, why is `head` explicitly set to `nullptr`?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-if (head == nullptr) {
-    head = node;
-    return;
-}
-```
-4. In `addBug`, what condition does `head == nullptr` check, and what action is taken when it is true?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-BugNode* current = head;
-while (current->next != nullptr) {
-    current = current->next;
-}
-current->next = node;
-```
-5. In `addBug`, why does the `while` loop need to traverse until `current->next` becomes `nullptr`?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-node->next = nullptr;
-```
-6. In `addBug`, what is the purpose of setting `node->next` to `nullptr` after creating a new `BugNode`?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-BugNode* current = head;
-BugNode* prev = nullptr;
-```
-7. In `deleteBug`, what is the role of the `prev` pointer during the search for the node to delete?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-while (current != nullptr && current->data.id != bugId) {
-    prev = current;
-    current = current->next;
-}
-if (current == nullptr) {
-    return;
-}
-```
-8. In `deleteBug`, under what circumstances does the function exit without deleting any node?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-if (prev == nullptr) {
-    head = current->next;
-} else {
-    prev->next = current->next;
-}
-```
-9. In `deleteBug`, what does `prev == nullptr` indicate about the position of the node being deleted?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-delete current;
-```
-10. What is the purpose of `delete current;` in the `deleteBug` function?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-if (current->data.id == bugId) {
-    return &current->data;
-}
-```
-11. In `searchBug`, why does the function return the address of `current->data` rather than a copy of the `Bug` object?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-return nullptr;
-```
-12. What value does `searchBug` return when no bug with the given `bugId` exists in the list?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-return &current->data;
-```
-13. What does the `&` operator do in the `return` statement of `searchBug`?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-for (int i = 0; i < current->data.commentCount; i++) {
-    std::cout << "Comment " << i + 1 << ": "
-              << current->data.comments[i] << std::endl;
-}
-```
-14. In the `display` function, why is `current->data.commentCount` used as the loop limit instead of a fixed number?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-current = current->next;
-```
-15. In the `display` function, what is the purpose of `current = current->next;` at the end of the `while` loop body?
-
----
-
-**`src/LinkedList.cpp`**
-```cpp
-bool swapped;
-do {
-    swapped = false;
+LinkedList::~LinkedList() {
     BugNode* current = head;
-    while (current->next
+    while (current != nullptr) {
+        BugNode* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
+}
+```
+3. Why is `head` set to `nullptr` after the `while` loop in the destructor?
+
+---
+
+**`src/LinkedList.cpp`**
+```cpp
+void LinkedList::addBug(const Bug& bug) {
 
 ---
 
