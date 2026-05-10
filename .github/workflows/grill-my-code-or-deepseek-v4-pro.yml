@@ -60,7 +60,7 @@ jobs:
           # additional_context: |
           #   Assignment 3 — Python list comprehensions and lambda functions.
           #   Focus questions on why the student made their design choices.
-          additional_context: |
+          additional_context: "
               PROG2400 Supplementary
 
               Introduction
@@ -98,7 +98,8 @@ jobs:
                 6. Search the list of bugs for one, based on its id, and display the details of that bug.
                 7. Write all bugs in the linked list to the file on application end.
                 8. You cannot use library data structures (e.g. vector) to perform any functionality.
-                9. You can use standard datatypes (e.g. string), and you are allowed to use code that was provided to you
+                9. You can use standard datatypes (e.g. string), and you are allowed to use code that was provided to you.
+                "
 
           # ── File Filtering ────────────────────────────────────────────────
 
