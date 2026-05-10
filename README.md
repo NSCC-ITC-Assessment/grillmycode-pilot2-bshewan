@@ -1,3 +1,4 @@
+[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23870992)
 # GrillMyCode - Pilot #2
 
 This repository contains eleven GitHub Actions workflows that each analyse submitted code and generate comprehension questions using a different AI model. Unlike Pilot #1 — where a single action fired automatically on every push — the actions in this pilot are **triggered manually**, one at a time, so that the question output from each model can be observed and compared independently.
