@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0 # full history required for diff resolution
 
-      - uses: NSCC-ITC-Assessment/GrillMyCode@main
+      - uses: NSCC-ITC-Assessment/GrillMyCode@18-assignment-context
         with:
           # ── Authentication ────────────────────────────────────────────────
 
