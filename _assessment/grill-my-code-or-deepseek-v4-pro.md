@@ -1,7 +1,7 @@
 ## Grill My Code
 
-> **Generated:** 2026-05-10 15:14:18 UTC
-> **Commits reviewed:** `4334237` → `7400319`
+> **Generated:** 2026-05-11 11:27:14 UTC
+> **Commits reviewed:** `4334237` → `ba1c843`
 
 > **Files assessed:** `src/LinkedList.cpp`, `src/LinkedList.h`, `src/main.cpp`
 
@@ -13,16 +13,16 @@
 struct Bug {
     int id;
     std::string date;
-    std::string  briefDesc;
-    std::string  detailedDesc;
-    std::string  status;
-    std::string  severity;
-    std::string  comments[10];
+    std::string briefDesc;
+    std::string detailedDesc;
+    std::string status;
+    std::string severity;
+    std::string comments[10];
     int commentCount;
 };
 ```
 
-1. In the `Bug` struct, why is `comments` declared as a fixed-size array of 10 `std::string` elements rather than using a dynamic container?
+1. In the `Bug` struct, why is `comments` declared as a fixed-size array of 10 `std::string` objects rather than a dynamically resizable container?
 
 ---
 
@@ -35,19 +35,7 @@ struct BugNode {
 };
 ```
 
-2. What role does the `next` pointer play in the `BugNode` struct, and how does it enable the linked list structure required by the assignment?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-LinkedList::LinkedList() {
-    head = nullptr;
-};
-```
-
-3. What is the purpose of setting `head = nullptr` in the `LinkedList` constructor, and what would happen if this initialization were omitted?
+2. What is the role of the `next` pointer within the `BugNode` struct, and how does it enable the linked list structure?
 
 ---
 
@@ -65,7 +53,7 @@ LinkedList::~LinkedList() {
 }
 ```
 
-4. In the `LinkedList` destructor, why is the temporary pointer `next` necessary during the `while` loop that deletes each `BugNode`?
+3. In the destructor, why is it necessary to save `current->next` into a local variable `next` before calling `delete current`?
 
 ---
 
@@ -88,7 +76,7 @@ void LinkedList::addBug(const Bug& bug) {
 }
 ```
 
-5. In `addBug`, when `head` is not `nullptr`, the code traverses to the end of the list before inserting. How does the loop condition `current->next != nullptr` ensure that the new node is appended rather than prepended?
+4. In `addBug`, what is the significance of the condition `if (head == nullptr)`, and how does the subsequent `return` statement affect the flow of execution?
 
 ---
 
@@ -114,7 +102,7 @@ void LinkedList::deleteBug(int bugId) {
 }
 ```
 
-6. In `deleteBug`, what is the significance of the `prev` pointer, and how does the code handle the case where the node to be deleted is the first node in the list?
+5. In `deleteBug`, what does the condition `prev == nullptr` indicate about the position of the node to be deleted within the list?
 
 ---
 
@@ -133,7 +121,7 @@ Bug* LinkedList::searchBug(int bugId) {
 }
 ```
 
-7. The `searchBug` function returns a pointer to a `Bug` (`&current->data`). What are the implications of returning the address of a member of a heap-allocated `BugNode` in terms of the pointer's lifetime?
+6. What does the `searchBug` function return when a bug with the specified `bugId` is not found, and how does the caller in `main.cpp` handle that return value?
 
 ---
 
@@ -159,7 +147,7 @@ void LinkedList::display() const {
 }
 ```
 
-8. In the `display` function, the `for` loop uses `current->data.commentCount` as its bound. How does the `loadFromFile` function ensure that `commentCount` accurately reflects the number of comments stored in the `comments` array?
+7. In the `display` function, how does the loop `for (int i = 0; i < current->data.commentCount; i++)` know how many comments to print for each bug?
 
 ---
 
@@ -185,7 +173,7 @@ void LinkedList::sortById() {
 }
 ```
 
-9. The `sortById` function swaps the entire `Bug` data payload between nodes rather than rearranging node pointers. What is one advantage and one potential disadvantage of this approach when sorting a linked list of large data structures?
+8. In the `sortById` function, what is the purpose of the `swapped` flag, and what condition causes the outer `do...while` loop to terminate?
 
 ---
 
@@ -211,7 +199,7 @@ void LinkedList::sortByStatus() {
 }
 ```
 
-10. The `sortByStatus` function uses the `>` operator to compare `current->data.status` with `current->next->data.status`. How does the behavior of `std::string`’s `operator>` determine the resulting sort order for bug statuses like `"OPEN"`, `"CLOSED"`, `"IN PROGRESS"`, and `"WAITING"`?
+9. When comparing `current->data.status > current->next->data.status` in `sortByStatus`, what property of `std::string` is being used to determine the sort order?
 
 ---
 
@@ -250,7 +238,22 @@ void LinkedList::loadFromFile(const std::string& filename) {
 }
 ```
 
-11. In `loadFromFile`, the inner `while` loop breaks when `comment.empty()` is true. How does this condition relate to the double-pipe `||` record terminator specified in the bug file format?
+10. In `loadFromFile`, what is the role of `std::stringstream ss(line)` in processing each line read from the file?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+while (getline(ss, comment, '|')) {
+    if (comment.empty()) break;
+    if (bug.commentCount < 10) {
+        bug.comments[bug.commentCount++] = comment;
+    }
+}
+```
+
+11. Inside `loadFromFile`, what is the purpose of the condition `if (comment.empty()) break;` within the comment-reading loop, and how does it relate to the file format specification?
 
 ---
 
@@ -274,10 +277,10 @@ void LinkedList::saveToFile(const std::string& filename) const {
         current = current->next;
     }
     file.close();
-};
+}
 ```
 
-12. In `saveToFile`, the code writes `"||\n"` after the comment loop. How does this output satisfy the record format requirement that each record ends with a double pipe symbol?
+12. In `saveToFile`, why is the string `"||\n"` appended after writing all comments for a bug, and what does it represent according to the file format?
 
 ---
 
@@ -291,7 +294,7 @@ Bug b4 = {4, "2026-04-27", "Slow app", "Performance lag", "OPEN", "MEDIUM", "Inv
 Bug b5 = {5, "2026-04-28", "Security", "Vulnerability", "CLOSED", "CRITICAL", "Fixed"};
 ```
 
-13. In `main.cpp`, the `Bug` objects `b1` through `b5` are initialized using aggregate initialization with only seven arguments, but the `Bug` struct contains eight fields (including `commentCount`). What value will `commentCount` have for these objects, and why?
+13. In the initialization of `b1` through `b5`, how is the single string `"Needs fix"` stored in the `Bug` struct given that `comments` is an array?
 
 ---
 
@@ -299,9 +302,14 @@ Bug b5 = {5, "2026-04-28", "Security", "Vulnerability", "CLOSED", "CRITICAL", "F
 
 ```cpp
 list.loadFromFile("../docs/bugFile.txt");
+list.addBug(b1);
+list.addBug(b2);
+list.addBug(b3);
+list.addBug(b4);
+list.addBug(b5);
 ```
 
-14. The `loadFromFile` call uses a relative path `"../docs/bugFile.txt"`. What is the significance of the `..` in this path relative to the executable’s working directory?
+14. What is the order of bugs in the linked list immediately after the five `addBug` calls, before any sorting is performed?
 
 ---
 
@@ -311,33 +319,12 @@ list.loadFromFile("../docs/bugFile.txt");
 list.sortById();
 std::cout << "\nSorted by ID:\n";
 list.display();
-```
-
-15. After calling `list.sortById()` and then `list.display()`, what determines the order in which bugs are printed to the console?
-
----
-
-**`src/main.cpp`**
-
-```cpp
 list.deleteBug(3);
 std::cout << "\nAfter Deletion:\n";
 list.display();
 ```
 
-16. After `list.deleteBug(3)` is called, what would `list.searchBug(3)` return, and why?
-
----
-
-**`src/main.cpp`**
-
-```cpp
-list.sortByStatus();
-std::cout << "\nSorted by Status:\n";
-list.display();
-```
-
-17. When `list.sortByStatus()` is invoked, the bugs are sorted lexicographically by their `status` string. Based on the status values assigned in `main.cpp`, what would be the first and last statuses displayed after this sort?
+15. After `deleteBug(3)` is called, what does the subsequent `list.display()` output show regarding the bug with `id` 3?
 
 ---
 
@@ -351,17 +338,262 @@ if (found) {
 }
 ```
 
-18. In the `searchBug` usage within `main.cpp`, the code checks `if (found)` before dereferencing the pointer. Why is this check necessary, and what could happen if it were omitted and the bug ID did not exist?
+16. If `searchBug(2)` were called after `deleteBug(2)` instead of `deleteBug(3)`, what would the value of `found` be and what would the program output?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::addBug(const Bug& bug) {
+    BugNode* node = new BugNode;
+    node->data = bug;
+    node->next = nullptr;
+    // ...
+}
+```
+
+17. In `addBug`, the parameter `bug` is passed by `const` reference. What is the benefit of this compared to passing by value for a struct containing multiple `std::string` members?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::deleteBug(int bugId) {
+    BugNode* current = head;
+    BugNode* prev = nullptr;
+    while (current != nullptr && current->data.id != bugId) {
+        prev = current;
+        current = current->next;
+    }
+    if (current == nullptr) {
+        return;
+    }
+    // ...
+}
+```
+
+18. In `deleteBug`, what happens if the function is called with a `bugId` that does not exist in the list, and how is this communicated to the caller?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::sortById() {
+    if (!head) return;
+    bool swapped;
+    do {
+        swapped = false;
+        BugNode* current = head;
+        while (current->next != nullptr) {
+            if (current->data.id > current->next->data.id) {
+                Bug temp = current->data;
+                current->data = current->next->data;
+                current->next->data = temp;
+                swapped = true;
+            }
+            current = current->next;
+        }
+    }while (swapped);
+}
+```
+
+19. In `sortById`, the swap operation exchanges the entire `Bug` data payload between nodes. What is the advantage of swapping data rather than rearranging node pointers?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::loadFromFile(const std::string& filename) {
+    // ...
+    while (getline(file, line)) {
+        // ...
+        bug.commentCount = 0;
+        while (getline(ss, comment, '|')) {
+            if (comment.empty()) break;
+            if (bug.commentCount < 10) {
+                bug.comments[bug.commentCount++] = comment;
+            }
+        }
+        addBug(bug);
+    }
+    // ...
+}
+```
+
+20. In `loadFromFile`, what happens to comments beyond the 10th one for a single bug record, and why is this behavior present?
+
+---
+
+**`src/LinkedList.h`**
+
+```cpp
+struct Bug {
+    int id;
+    std::string date;
+    std::string briefDesc;
+    std::string detailedDesc;
+    std::string status;
+    std::string severity;
+    std::string comments[10];
+    int commentCount;
+};
+```
+
+21. The `Bug` struct uses a C-style array for `comments`. How does the `commentCount` member relate to the valid elements within that array?
 
 ---
 
 **`src/main.cpp`**
 
 ```cpp
-list.saveToFile("../output/bugFile.txt");
+list.sortByStatus();
+std::cout << "\nSorted by Status:\n";
+list.display();
 ```
 
-19. The `saveToFile` call writes to `"../output/bugFile.txt"`. What must be true about the `output` directory relative to the executable for this operation to succeed?
+22. After `sortByStatus()` is called, what determines the relative order of two bugs that have the same `status` string?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::saveToFile(const std::string& filename) const {
+    std::ofstream file(filename);
+    BugNode* current = head;
+    while (current != nullptr) {
+        file << current->data.id << "|"
+             << current->data.date << "|"
+             << current->data.briefDesc << "|"
+             << current->data.detailedDesc << "|"
+             << current->data.status << "|"
+             << current->data.severity << "|";
+        for (int i = 0; i < current->data.commentCount; i++) {
+            file << current->data.comments[i] << "|";
+        }
+        file << "||\n";
+        current = current->next;
+    }
+    file.close();
+}
+```
+
+23. In `saveToFile`, if a bug has zero comments (`commentCount == 0`), what is the exact sequence of characters written to the file for that bug after the severity field?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+LinkedList::LinkedList() {
+    head = nullptr;
+}
+```
+
+24. Why is it important to initialize `head` to `nullptr` in the `LinkedList` constructor, and what would happen if this initialization were omitted?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+Bug* LinkedList::searchBug(int bugId) {
+    BugNode* current = head;
+    while (current != nullptr) {
+        if (current->data.id == bugId) {
+            return &current->data;
+        }
+        current = current->next;
+    }
+    return nullptr;
+}
+```
+
+25. The `searchBug` function returns a raw pointer to a `Bug` stored inside a node. What risk does this pose if the node is later deleted from the list?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::display() const {
+    BugNode* current = head;
+    while (current != nullptr) {
+        // ... print fields ...
+        for (int i = 0; i < current->data.commentCount; i++) {
+            std::cout << "Comment " << i + 1 << ": "
+                      << current->data.comments[i] << std::endl;
+        }
+        // ...
+    }
+}
+```
+
+26. In the `display` function, the `const` qualifier on the method declaration prevents modification of the list. What does this guarantee about the `head` pointer and the nodes during iteration?
+
+---
+
+**`src/main.cpp`**
+
+```cpp
+list.loadFromFile("../docs/bugFile.txt");
+```
+
+27. If the file `"../docs/bugFile.txt"` does not exist or cannot be opened, what is the observable behavior of the program based on the `loadFromFile` implementation?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::loadFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cout << "File not found.\n";
+        return;
+    }
+    // ...
+}
+```
+
+28. In `loadFromFile`, after printing `"File not found.\n"` and returning, what is the state of the `LinkedList` object that called this function?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::addBug(const Bug& bug) {
+    BugNode* node = new BugNode;
+    node->data = bug;
+    node->next = nullptr;
+    // ...
+}
+```
+
+29. In `addBug`, memory for a new `BugNode` is allocated with `new`. Which part of the code is responsible for deallocating this memory, and under what circumstances is it called?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::deleteBug(int bugId) {
+    // ...
+    if (prev == nullptr) {
+        head = current->next;
+    }else {
+        prev->next = current->next;
+    }
+    delete current;
+}
+```
+
+30. In `deleteBug`, after the node is deleted, what ensures that the linked list remains properly connected for the remaining nodes?
 
 ---
 
@@ -385,7 +617,44 @@ public:
 };
 ```
 
-20. The `LinkedList` class manages a singly linked list using only a `head` pointer. How does the absence of a `tail` pointer affect the time complexity of the `addBug` function as currently implemented?
+31. The `LinkedList` class manages a collection of dynamically allocated `BugNode` objects. Which special member functions, beyond the destructor, might need to be explicitly defined to prevent shallow copy issues, and why?
+
+---
+
+**`src/main.cpp`**
+
+```cpp
+Bug b1 = {1, "2026-04-24", "Crash", "App crashes", "OPEN", "HIGH", "Needs fix"};
+```
+
+32. In the aggregate initialization of `b1`, the string `"Needs fix"` is provided. How does this single string value populate the `comments` array and `commentCount` member?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::sortById() {
+    if (!head) return;
+    // ...
+}
+```
+
+33. What is the purpose of the early return `if (!head) return;` in both `sortById` and `sortByStatus`, and what scenario does it guard against?
+
+---
+
+**`src/LinkedList.cpp`**
+
+```cpp
+void LinkedList::saveToFile(const std::string& filename) const {
+    std::ofstream file(filename);
+    // ...
+    file.close();
+}
+```
+
+34. In `saveToFile`, what happens to the contents of the output file if it already exists before this function is called?
 
 ---
 
@@ -393,19 +662,17 @@ public:
 
 ```cpp
 void LinkedList::loadFromFile(const std::string& filename) {
-    ...
-    bug.commentCount = 0;
-    while (getline(ss, comment, '|')) {
-        if (comment.empty()) break;
-        if (bug.commentCount < 10) {
-            bug.comments[bug.commentCount++] = comment;
-        }
+    // ...
+    while (getline(file, line)) {
+        // ...
+        getline(ss, token, '|');
+        bug.id = stoi(token);
+        // ...
     }
-    ...
 }
 ```
 
-21. In `loadFromFile`, the comment-reading loop has a guard `if (bug.commentCount < 10)`. What is the consequence for bug records in the file that contain more than 10 comments?
+35. In `loadFromFile`, the first token is converted to an integer using `stoi(token)`. What would happen if the first field of a line in the file contained non-numeric characters?
 
 ---
 
@@ -419,153 +686,11 @@ void LinkedList::deleteBug(int bugId) {
         prev = current;
         current = current->next;
     }
-    if (current == nullptr) {
-        return;
-    }
-    ...
+    // ...
 }
 ```
 
-22. In `deleteBug`, if the list is empty (`head == nullptr`), what does the initial `while` loop condition evaluate to, and what does the function ultimately do?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::sortById() {
-    ...
-    do {
-        swapped = false;
-        BugNode* current = head;
-        while (current->next != nullptr) {
-            if (current->data.id > current->next->data.id) {
-                Bug temp = current->data;
-                current->data = current->next->data;
-                current->next->data = temp;
-                swapped = true;
-            }
-            current = current->next;
-        }
-    }while (swapped);
-}
-```
-
-23. The `sortById` function implements a bubble sort algorithm. What property of the `swapped` flag causes the outer `do...while` loop to terminate?
-
----
-
-**`src/LinkedList.h`**
-
-```cpp
-struct Bug {
-    int id;
-    std::string date;
-    std::string  briefDesc;
-    std::string  detailedDesc;
-    std::string  status;
-    std::string  severity;
-    std::string  comments[10];
-    int commentCount;
-};
-```
-
-24. The `Bug` struct contains a `comments` array with a fixed capacity of 10. How does the `commentCount` field relate to the valid elements within the `comments` array when iterating in `display` and `saveToFile`?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::display() const {
-    ...
-    for (int i = 0; i < current->data.commentCount; i++) {
-        std::cout << "Comment " << i + 1 << ": "
-                  << current->data.comments[i] << std::endl;
-    }
-    ...
-}
-```
-
-25. In the `display` function, the comment loop uses `i + 1` for numbering. If a bug has zero comments, how many iterations does this loop execute, and what is printed for comments?
-
----
-
-**`src/main.cpp`**
-
-```cpp
-Bug b1 = {1, "2026-04-24", "Crash", "App crashes", "OPEN", "HIGH", "Needs fix"};
-```
-
-26. In `main.cpp`, the `Bug` objects are created with hardcoded ID values (1 through 5). What potential problem could arise if the file loaded by `loadFromFile` already contains a bug with the same ID as one of these hardcoded values?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::addBug(const Bug& bug) {
-    BugNode* node = new BugNode;
-    node->data = bug;
-    node->next = nullptr;
-    ...
-}
-```
-
-27. In `addBug`, the new `BugNode` is allocated with `new`. Which function or language feature is responsible for deallocating this memory when the bug is removed from the list?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::loadFromFile(const std::string& filename) {
-    ...
-    while (getline(file, line)) {
-        std::stringstream ss(line);
-        ...
-        getline(ss, token, '|');
-        bug.id = stoi(token);
-        ...
-    }
-    ...
-}
-```
-
-28. In `loadFromFile`, the first token read from each line is converted to an integer using `stoi(token)`. What would happen if the first token in a line of the input file were not a valid integer string?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::saveToFile(const std::string& filename) const {
-    std::ofstream file(filename);
-    ...
-    file.close();
-};
-```
-
-29. The `saveToFile` function opens an `ofstream` with the provided filename. If a file with that name already exists, what happens to its previous contents when this function executes?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-Bug* LinkedList::searchBug(int bugId) {
-    BugNode* current = head;
-    while (current != nullptr) {
-        if (current->data.id == bugId) {
-            return &current->data;
-        }
-        current = current->next;
-    }
-    return nullptr;
-}
-```
-
-30. The `searchBug` function performs a linear search through the linked list. How does the loop condition `current != nullptr` ensure that the function correctly returns `nullptr` when the `bugId` is not found?
+36. In `deleteBug`, the loop condition uses `current->data.id != bugId`. If the list contains multiple bugs with the same `id`, which one will be deleted?
 
 ---
 
@@ -579,38 +704,7 @@ list.addBug(b4);
 list.addBug(b5);
 ```
 
-31. In `main.cpp`, five bugs are added to the list after loading from the file. In what order will these five bugs appear relative to the bugs loaded from the file before `sortById` is called?
-
----
-
-**`src/LinkedList.h`**
-
-```cpp
-struct BugNode {
-    Bug data;
-    BugNode* next;
-};
-```
-
-32. The `BugNode` struct contains a `Bug data` member rather than a pointer to a `Bug`. What does this imply about the memory layout of each node in the linked list with respect to the `Bug` object?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::deleteBug(int bugId) {
-    ...
-    if (prev == nullptr) {
-        head = current->next;
-    }else {
-        prev->next = current->next;
-    }
-    delete current;
-}
-```
-
-33. In `deleteBug`, after updating the appropriate pointer (`head` or `prev->next`), the code calls `delete current`. Why is it safe to delete `current` at this point, and what would be the consequence of not deleting it?
+37. The five bugs are added with hardcoded IDs 1 through 5. If the file loaded in `loadFromFile` already contained a bug with ID 3, how many bugs with ID 3 would exist in the list before `deleteBug(3)` is called?
 
 ---
 
@@ -618,7 +712,7 @@ void LinkedList::deleteBug(int bugId) {
 
 ```cpp
 void LinkedList::sortByStatus() {
-    ...
+    // ...
     while (current->next != nullptr) {
         if (current->data.status > current->next->data.status) {
             Bug temp = current->data;
@@ -628,11 +722,11 @@ void LinkedList::sortByStatus() {
         }
         current = current->next;
     }
-    ...
+    // ...
 }
 ```
 
-34. In `sortByStatus`, the comparison `current->data.status > current->next->data.status` uses lexicographic ordering. Given the status strings `"CLOSED"`, `"IN PROGRESS"`, `"OPEN"`, and `"WAITING"`, which status would appear first after sorting in ascending order?
+38. In `sortByStatus`, the comparison `current->data.status > current->next->data.status` uses lexicographical ordering. What would be the sorted order of the statuses `"WAITING"`, `"OPEN"`, `"IN PROGRESS"`, and `"CLOSED"`?
 
 ---
 
@@ -640,50 +734,64 @@ void LinkedList::sortByStatus() {
 
 ```cpp
 void LinkedList::loadFromFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file) {
-        std::cout << "File not found.\n";
-        return;
-    }
-    ...
+    // ...
+    Bug bug;
+    getline(ss, token, '|');
+    bug.id = stoi(token);
+    getline(ss, bug.date, '|');
+    getline(ss, bug.briefDesc, '|');
+    getline(ss, bug.detailedDesc, '|');
+    getline(ss, bug.status, '|');
+    getline(ss, bug.severity, '|');
+    // ...
 }
 ```
 
-35. In `loadFromFile`, the function checks `if (!file)` after attempting to open the file. Under what specific circumstances would `!file` evaluate to `true`, causing the "File not found." message to be printed?
-
----
-
-**`src/main.cpp`**
-
-```cpp
-int main() {
-    LinkedList list;
-    list.loadFromFile("../docs/bugFile.txt");
-    ...
-    list.saveToFile("../output/bugFile.txt");
-    return 0;
-}
-```
-
-36. The `main` function creates a `LinkedList` object on the stack. When `main` returns, what mechanism ensures that the `LinkedList` destructor is called, and what does that destructor do?
+39. In `loadFromFile`, the code assumes exactly six pipe-delimited fields before the comments begin. How does this assumption align with the assignment's file format specification?
 
 ---
 
 **`src/LinkedList.cpp`**
 
 ```cpp
-LinkedList::~LinkedList() {
-    BugNode* current = head;
-    while (current != nullptr) {
-        BugNode* next = current->next;
-        delete current;
-        current = next;
-    }
-    head = nullptr;
+void LinkedList::display() const {
+    // ...
+    std::cout << "Status: " << current->data.status << std::endl;
+    std::cout << "Severity: " << current->data.severity << std::endl;
+    // ...
 }
 ```
 
-37. In the destructor, after the `while` loop completes, `head` is set to `nullptr`. Given that the `LinkedList` object is being destroyed, what is the practical purpose of setting `head` to `nullptr` at this point?
+40. In the `display` function, the `status` and `severity` fields are printed as raw strings. According to the assignment specification, what are the four possible values for each of these fields?
+
+---
+
+**`src/main.cpp`**
+
+```cpp
+list.saveToFile("../output/bugFile.txt");
+```
+
+41. The output file path is `"../output/bugFile.txt"`. What would happen if the `output` directory did not exist when the program attempts to save?
+
+---
+
+**`src/LinkedList.h`**
+
+```cpp
+struct Bug {
+    int id;
+    std::string date;
+    std::string briefDesc;
+    std::string detailedDesc;
+    std::string status;
+    std::string severity;
+    std::string comments[10];
+    int commentCount;
+};
+```
+
+42. The `Bug` struct contains both `briefDesc` and `detailedDesc` as separate fields. How does the `display` function differentiate between these two when printing?
 
 ---
 
@@ -694,179 +802,41 @@ void LinkedList::addBug(const Bug& bug) {
     BugNode* node = new BugNode;
     node->data = bug;
     node->next = nullptr;
-    ...
+    // ...
 }
 ```
 
-38. In `addBug`, the parameter `bug` is passed by `const` reference. What is the benefit of using `const Bug&` instead of passing by value for this function?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::display() const {
-    BugNode* current = head;
-    while (current != nullptr) {
-        ...
-        current = current->next;
-    }
-}
-```
-
-39. The `display` function is marked as `const`. What restriction does this place on the implementation of `display`, and why is it appropriate for a function that only prints the list contents?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::saveToFile(const std::string& filename) const {
-    ...
-    while (current != nullptr) {
-        file << current->data.id << "|"
-             << current->data.date << "|"
-             ...
-        for (int i = 0; i < current->data.commentCount; i++) {
-            file << current->data.comments[i] << "|";
-        }
-        file << "||\n";
-        current = current->next;
-    }
-    ...
-}
-```
-
-40. In `saveToFile`, the code writes a pipe `|` after each comment in the loop, and then writes `"||\n"` after the loop. If a bug has zero comments, what exact sequence of characters is written to the file for that bug after the severity field?
-
----
-
-**`src/LinkedList.h`**
-
-```cpp
-struct Bug {
-    int id;
-    std::string date;
-    std::string  briefDesc;
-    std::string  detailedDesc;
-    std::string  status;
-    std::string  severity;
-    std::string  comments[10];
-    int commentCount;
-};
-```
-
-41. The `Bug` struct uses `std::string` for all text fields. How does the use of `std::string` (as opposed to C-style character arrays) affect the ability to store variable-length descriptions and comments?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::sortById() {
-    if (!head) return;
-    ...
-}
-```
-
-42. In both `sortById` and `sortByStatus`, the first line checks `if (!head) return;`. What scenario does this guard against, and why would proceeding without this check be problematic?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::loadFromFile(const std::string& filename) {
-    ...
-    while (getline(file, line)) {
-        std::stringstream ss(line);
-        std::string token;
-        std::string comment;
-        Bug bug;
-        getline(ss, token, '|');
-        bug.id = stoi(token);
-        ...
-        addBug(bug);
-    }
-    file.close();
-}
-```
-
-43. In `loadFromFile`, a new local `Bug bug` is created for each line read from the file. What happens to this local `bug` object after `addBug(bug)` is called, and how does `addBug` ensure the data persists beyond the scope of the loop iteration?
-
----
-
-**`src/main.cpp`**
-
-```cpp
-Bug* found = list.searchBug(2);
-if (found) {
-    std::cout << "\nFound Bug ID 2:\n";
-    std::cout << found->briefDesc << std::endl;
-}
-```
-
-44. In `main.cpp`, after finding bug ID 2, only `found->briefDesc` is printed. According to the assignment requirement to "display the details of that bug," what additional fields might be expected to be displayed that are not shown here?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::deleteBug(int bugId) {
-    ...
-    while (current != nullptr && current->data.id != bugId) {
-        prev = current;
-        current = current->next;
-    }
-    ...
-}
-```
-
-45. In `deleteBug`, the `while` loop condition uses `current->data.id != bugId`. If the list contains multiple bugs with the same `bugId`, which one would be deleted by this function?
-
----
-
-**`src/LinkedList.cpp`**
-
-```cpp
-void LinkedList::sortById() {
-    ...
-    do {
-        swapped = false;
-        BugNode* current = head;
-        while (current->next != nullptr) {
-            if (current->data.id > current->next->data.id) {
-                Bug temp = current->data;
-                current->data = current->next->data;
-                current->next->data = temp;
-                swapped = true;
-            }
-            current = current->next;
-        }
-    }while (swapped);
-}
-```
-
-46. In `sortById`, the inner `while` loop condition is `current->next != nullptr`. Why is it necessary to check `current->next` rather than just `current != nullptr` to avoid accessing invalid memory when swapping data?
+43. In `addBug`, the new node is always appended to the end of the list. How does the function locate the tail of the list to perform this insertion?
 
 ---
 
 ## Broader Questions
 
-47. The assignment specification states that students "cannot use library data structures (e.g. vector) to perform any functionality." How does the custom `LinkedList` class and its manual memory management satisfy this constraint?
+44. The assignment specifies that library data structures (e.g., `vector`) cannot be used. How does the custom `LinkedList` class fulfill this requirement for storing and managing the collection of bugs?
 
 ---
 
-48. The bug file format uses a pipe `|` as a field delimiter and a double pipe `||` as a record terminator. Why might a single-character delimiter like `|` be problematic if the data fields themselves could contain that character, and how does the assignment specification mitigate this concern?
+45. The assignment requires reading all bugs from a file into a linked list on application start and writing them back on application end. How do the `loadFromFile` and `saveToFile` functions work together to maintain data persistence between program runs?
 
 ---
 
-49. The `sortByStatus` function sorts bugs alphabetically by their status string. Given the four defined statuses (`OPEN`, `CLOSED`, `IN PROGRESS`, `WAITING`), does alphabetical order correspond to any meaningful logical order? What does this imply about the suitability of string comparison for sorting by status?
+46. The assignment requires displaying the list of bugs ordered by bug ID. How does the `sortById` function in `LinkedList.cpp` achieve this ordering, and what sorting algorithm does it implement?
 
 ---
 
-50. The `main` function demonstrates a specific sequence of operations: load, add, sort by ID, display, delete, display, sort by status, display, search, save. How does this sequence directly map to the numbered application requirements (1 through 7) listed in the assignment specification?
+47. The assignment requires deleting one bug based on its ID and re-displaying the list. How does the `deleteBug` function handle the three distinct cases of deleting the head node, a middle node, or a non-existent node?
+
+---
+
+48. The assignment requires searching for a bug based on its ID and displaying its details. How does the `searchBug` function traverse the linked list, and what information does `main.cpp` choose to display when a bug is found?
+
+---
+
+49. The assignment requires sorting bugs by status. How does the `sortByStatus` function differ from `sortById` in terms of the data member used for comparison, and why might the resulting order not match a severity-based priority?
+
+---
+
+50. The file format uses a pipe character as a delimiter and ends records with a double pipe. How does the `loadFromFile` function's use of `getline` with a delimiter and the empty-comment `break` condition correctly parse this format?
 
 ---
 
