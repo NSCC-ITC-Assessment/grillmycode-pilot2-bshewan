@@ -61,10 +61,24 @@ jobs:
           #   Assignment 3 — Python list comprehensions and lambda functions.
           #   Focus questions on why the student made their design choices.
           additional_context: "
-              The following is the assignment specification for a bug tracking application that students are tasked with creating. Use this context to generate relevant comprehension questions that test the student's understanding of the requirements and their implementation choices.
-              Students are taking an advanced programming course (PROG2400) and are expected to demonstrate their ability to read and interpret assignment specifications, design appropriate data structures (like linked lists), implement file I/O operations, and apply sorting and searching algorithms without relying on library data structures. 
+              The following is the assignment specification for a bug tracking application that students are tasked with creating. 
+              Use this context to generate relevant comprehension questions that test the student's understanding of the requirements 
+              and their implementation choices.
+
+              Students are taking an advanced programming course (PROG2400) and are expected to demonstrate their ability to read and 
+              interpret assignment specifications, design appropriate data structures (like linked lists), implement file I/O operations, 
+              and apply sorting and searching algorithms without relying on library data structures. 
               The questions should probe their understanding of these concepts as they relate to the provided assignment specification.
-              When asking questions about a particular function, include the entire function definition in the question, not just a snippet. This allows the student to see the full context of their implementation and encourages them to think critically about how their code meets the assignment requirements.
+              The questions should not be simplistic or syntax-focused; instead, they should encourage the student to reflect on their 
+              design and implementation decisions in the context of the assignment requirements.
+              The questions should encourage critical thinking about how the student has implemented the required features, 
+              such as how they read and write to files, how they manage the linked list of bugs, and how they ensure their code meets 
+              the specified requirements. Look for opportunities to ask about their design decisions, such as how they chose to represent 
+              the bug data, how they implemented the sorting and searching functionalities, and how they handle edge cases (e.g., deleting a bug that doesn't exist).
+
+              When asking questions about a particular function, include the entire function definition in the question, not just a snippet. 
+              This allows the student to see the full context of their implementation and encourages them to think critically about how 
+              their code meets the assignment requirements.
           
               The assignment specification is as follows:
 
@@ -89,12 +103,11 @@ jobs:
                   • The comment fields are optional. All others are mandatory.
                   • The entire record ends with a double pipe symbol. (||)
                 Example:
- 
-                BUG0001|04-19-2024|Sample Bug #1|This is bug number one.|OPEN|HIGH|comment 1|comment 2||
-                BUG0003|04-19-2024|Sample Bug #3|This is bug number three.|CLOSED|HIGH|Initial comment|Another comment||
-                BUG0004|04-19-2024|Sample Bug #1|This is bug number one.|OPEN|HIGH||
-                BUG0005|04-19-2024|Sample Bug #2|This is bug number two.|OPEN|LOW|Initial comment.|Second comment.||
-                BUG0006|04-19-2024|Sample Bug #3|This is bug number three.|CLOSED|HIGH|Initial comment|Another comment||
+                  BUG0001|04-19-2024|Sample Bug #1|This is bug number one.|OPEN|HIGH|comment 1|comment 2||
+                  BUG0003|04-19-2024|Sample Bug #3|This is bug number three.|CLOSED|HIGH|Initial comment|Another comment||
+                  BUG0004|04-19-2024|Sample Bug #1|This is bug number one.|OPEN|HIGH||
+                  BUG0005|04-19-2024|Sample Bug #2|This is bug number two.|OPEN|LOW|Initial comment.|Second comment.||
+                  BUG0006|04-19-2024|Sample Bug #3|This is bug number three.|CLOSED|HIGH|Initial comment|Another comment||
  
               Application Requirements
                 1. Read all bugs stored in the file into a linked list on application start.
