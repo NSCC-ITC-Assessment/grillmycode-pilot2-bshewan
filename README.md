@@ -1,7 +1,7 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23870992)
 # GrillMyCode - Pilot #2
 
-This repository contains eleven GitHub Actions workflows that each analyse submitted code and generate comprehension questions using a different AI model. Unlike Pilot #1 — where a single action fired automatically on every push — the actions in this pilot are **triggered manually**, one at a time, so that the question output from each model can be observed and compared independently.
+This repository contains fourteen GitHub Actions workflows that each analyse submitted code and generate comprehension questions using a different AI model. Unlike Pilot #1 — where a single action fired automatically on every push — the actions in this pilot are **triggered manually**, one at a time, so that the question output from each model can be observed and compared independently.
 
 ---
 
@@ -18,9 +18,9 @@ Your feedback on question quality is highly valuable. Note any differences you o
 
 ---
 
-## The Eleven Actions
+## The Fourteen Actions
 
-There are eleven workflows, grouped by the API they call:
+There are fourteen workflows, grouped by the API they call:
 
 ### GitHub Models
 
@@ -35,19 +35,22 @@ These four workflows call models hosted on **GitHub Models**:
 
 ### OpenRouter
 
-These seven workflows call models via **OpenRouter**:
+These ten workflows call models via **OpenRouter**:
 
 | Workflow name | Model ID |
 |---|---|
+| GrillMyCode - OpenRouter - Claude Haiku 4.5 | `anthropic/claude-haiku-4.5` |
 | GrillMyCode - OpenRouter - DeepSeek V4 Pro | `deepseek/deepseek-v4-pro` |
 | GrillMyCode - OpenRouter - GLM 5 | `z-ai/glm-5` |
+| GrillMyCode - OpenRouter - Google Gemini 3 Flash Preview | `google/gemini-3-flash-preview` |
+| GrillMyCode - OpenRouter - Google Gemma 4 31B | `google/gemma-4-31b-it` |
 | GrillMyCode - OpenRouter - GPT 5.1 Codex Mini | `openai/gpt-5.1-codex-mini` |
 | GrillMyCode - OpenRouter - Minimax 2.7 | `minimax/minimax-m2.7` |
 | GrillMyCode - OpenRouter - Qwen 3.6 Plus | `qwen/qwen3.6-plus` |
 | GrillMyCode - OpenRouter - Step 3.5 Flash | `stepfun/step-3.5-flash` |
-| GrillMyCode - OpenRouter - Tencent Hy3 Preview | `tencent/hy3-preview:free` |
+| GrillMyCode - OpenRouter - Tencent Hy3 Preview | `tencent/hy3-preview` |
 
-Each action follows the same core process as Pilot #1: it checks out the repository, diffs your code against the starter commit, strips comments, and sends the diff to the model. Unlike Pilot #1, the questions are **not** posted to the Issues list — instead, each action saves its output as a uniquely named Markdown file in the `_assessment/` folder and commits it back to the repository. The filename includes the model name so outputs from all eleven actions can sit alongside each other and be compared directly.
+Each action follows the same core process as Pilot #1: it checks out the repository, diffs your code against the starter commit, strips comments, and sends the diff to the model. Unlike Pilot #1, the questions are **not** posted to the Issues list — instead, each action saves its output as a uniquely named Markdown file in the `_assessment/` folder and commits it back to the repository. The filename includes the model name so outputs from all fourteen actions can sit alongside each other and be compared directly.
 
 ---
 
@@ -66,7 +69,7 @@ Because the actions are not triggered automatically, you need to launch each one
 git pull
 ```
 
-The questions will be saved as a Markdown file in the `_assessment/` folder, named after the model that generated them (e.g. `gpt-4.1.md`, `deepseek-v4-pro.md`). After running all eleven actions, the folder will contain one file per model for easy side-by-side comparison.
+The questions will be saved as a Markdown file in the `_assessment/` folder, named after the model that generated them (e.g. `gpt-4.1.md`, `deepseek-v4-pro.md`). After running all fourteen actions, the folder will contain one file per model for easy side-by-side comparison.
 
 > You are free to run any action more than once — for example, after pushing additional code changes. Just be aware that re-running an action will **overwrite** that model's existing questions file in `_assessment/` with the new output.
 
@@ -76,7 +79,7 @@ The questions will be saved as a Markdown file in the `_assessment/` folder, nam
 
 **Never start a second action while another is still running.**
 
-All eleven workflows write their output to the same `_assessment/` folder and commit it back to the repository. Running two or more actions simultaneously will cause commit conflicts and corrupt the output. Always wait for the running action's spinner to show a green tick (completed) or a red x (completed but with errors) before starting the next one.
+All fourteen workflows write their output to the same `_assessment/` folder and commit it back to the repository. Running two or more actions simultaneously will cause commit conflicts and corrupt the output. Always wait for the running action's spinner to show a green tick (completed) or a red x (completed but with errors) before starting the next one.
 
 If you accidentally trigger two actions at the same time, cancel the second one immediately via **Actions → select the running workflow → Cancel workflow** before it reaches its commit step.
 
@@ -112,7 +115,7 @@ Work directly on the `main` branch — no feature branches are needed. Commit an
 
 ### Step 4 — Run the actions one at a time
 
-Follow the steps in [How to Run an Action Manually](#how-to-run-an-action-manually) above. Run each of the eleven actions in sequence, **waiting for one to finish before starting the next**. After each run, do a `git pull` to fetch the latest file from the `_assessment/` folder. Once all eleven actions have completed, the folder will contain one Markdown file per model, making it easy to compare outputs side by side.
+Follow the steps in [How to Run an Action Manually](#how-to-run-an-action-manually) above. Run each of the fourteen actions in sequence, **waiting for one to finish before starting the next**. After each run, do a `git pull` to fetch the latest file from the `_assessment/` folder. Once all fourteen actions have completed, the folder will contain one Markdown file per model, making it easy to compare outputs side by side.
 
 ---
 
@@ -144,4 +147,4 @@ Thanking everyone in advance!!
 | Requirement | Details |
 |---|---|
 | GitHub Models access | Four workflows use `github_token` with `models: read` permission — no extra setup needed |
-| OpenRouter API key | Seven workflows require an `OPENROUTER` secret. This has already been set up and you don't need to do anything for configuration |
+| OpenRouter API key | Ten workflows require an `OPENROUTER` secret. This has already been set up and you don't need to do anything for configuration |
