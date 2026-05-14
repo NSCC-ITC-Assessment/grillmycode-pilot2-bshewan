@@ -2,7 +2,7 @@
 # Inputs that don't apply to this scenario are commented out
 # with an explanation of when they would be used instead.
 
-name: GrillMyCode - OpenRouter - Tencent Hy3 Preview
+name: GrillMyCode - OpenRouter - Google Gemini 3 Flash Preview
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
           # OpenAI:        gpt-4o, gpt-4-turbo
           # Azure OpenAI:  your deployment name
           # OpenRouter:    depends on your configured providers and models
-          ai_model: "tencent/hy3-preview"
+          ai_model: "google/gemini-3-flash-preview"
 
           # API key for the provider. Leave empty when using github-models with
           # the built-in GITHUB_TOKEN. Required for openai and openrouter.
@@ -66,7 +66,6 @@ jobs:
           # Comma-separated globs for files to include. Leave empty to assess
           # all non-excluded files.
           # include_patterns: "*.py,*.js,src/**"
-          include_patterns: "**/*.cpp,**/*.h"
 
           # Comma-separated globs for files to exclude. Providing a value here
           # completely replaces the built-in default list (lock files, images,
@@ -88,7 +87,7 @@ jobs:
 
           # Basename of the assessment Markdown file. Always written to the
           # _assessment/ folder in the repository root and committed back.
-          output_file: "grill-my-code-or-tencent-hy3-preview.md"
+          output_file: "grill-my-code-or-google-gemini3-flash-preview.md"
 
           # Post the assessment as a comment on the pull request.
           # Disable if you only want the output file committed to the repo.
