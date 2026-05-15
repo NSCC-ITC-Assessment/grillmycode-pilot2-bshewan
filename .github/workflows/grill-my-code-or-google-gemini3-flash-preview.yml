@@ -60,6 +60,22 @@ jobs:
           # additional_context: |
           #   Assignment 3 — Python list comprehensions and lambda functions.
           #   Focus questions on why the student made their design choices.
+          assignment_context: "**/*.md"
+          additional_context: "
+              Students are taking an advanced programming course (PROG2400) and are expected to demonstrate their ability to read and 
+              interpret assignment specifications, design appropriate data structures (like linked lists), implement file I/O operations, 
+              and apply sorting and searching algorithms without relying on library data structures. 
+              The questions should probe their understanding of these concepts as they relate to the provided assignment specification.
+              The questions should not be simplistic or syntax-focused; instead, they should encourage the student to reflect on their 
+              design and implementation decisions in the context of the assignment requirements.
+              The questions should encourage critical thinking about how the student has implemented the required features, 
+              such as how they read and write to files, how they manage the linked list of bugs, and how they ensure their code meets 
+              the specified requirements. Look for opportunities to ask about their design decisions, such as how they chose to represent 
+              the bug data, how they implemented the sorting and searching functionalities, and how they handle edge cases (e.g., deleting a bug that doesn't exist).
+
+              When asking questions about a particular function, include the entire function definition in the question, not just a snippet. 
+              This allows the student to see the full context of their implementation and encourages them to think critically about how 
+              their code meets the assignment requirements. "
 
           # ── File Filtering ────────────────────────────────────────────────
 
