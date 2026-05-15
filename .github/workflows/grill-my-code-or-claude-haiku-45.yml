@@ -60,6 +60,7 @@ jobs:
           # additional_context: |
           #   Assignment 3 — Python list comprehensions and lambda functions.
           #   Focus questions on why the student made their design choices.
+          assignment_context_max_chars: 20000
           assignment_context: "**/*.md"
           additional_context: "
               Students are taking an advanced programming course (PROG2400) and are expected to demonstrate their ability to read and 
@@ -82,6 +83,7 @@ jobs:
           # Comma-separated globs for files to include. Leave empty to assess
           # all non-excluded files.
           # include_patterns: "*.py,*.js,src/**"
+          include_patterns: "**/*.cpp,**/*.h"
 
           # Comma-separated globs for files to exclude. Providing a value here
           # completely replaces the built-in default list (lock files, images,
